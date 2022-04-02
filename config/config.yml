@@ -1,0 +1,16 @@
+default:
+  server:
+    # Server port listening
+    port: 3301
+    # Interval in minutes
+    update_interval: 1
+  targets:
+    role1:
+      name: 'github'
+      domain: 'github.com'
+    role2:
+      name: 'google'
+      domain: 'google.com'
+    role3:
+      name: 'cloudflare'
+      domain: 'cloudflare.com'
