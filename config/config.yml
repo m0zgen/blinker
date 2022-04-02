@@ -4,17 +4,11 @@ default:
     port: 3301
     # Interval in minutes
     update_interval: 1
+  average: 100
   targets:
     role1:
-      name: 'bld'
-      domain: 'bld.sys-adm.in'
-      ip:
-        - 135.125.204.230
-        - 212.19.134.52
-        - 92.63.193.211
-        - 212.19.134.166
-        - 5.161.63.216
-        - 49.12.234.130
+      name: 'github'
+      domain: 'github.com'
     role2:
       name: 'google'
       domain: 'google.com'

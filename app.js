@@ -13,7 +13,7 @@ const config = yaml_config.load(__dirname + process.env.CONFIG);
 const pingCfg = { timeout: 10, extra: ['-i', '2'] };
 const roles = Object.values(config.targets)
 
-var results
+const average = config.average
 
 // ====================================================================
 
@@ -73,10 +73,11 @@ function getIP(host){
                     allTrees.push(h)
                     // console.log(allTrees);
 
-                    if (res.avg > 200) {
-                        console.log(`${r} Average: ${res.avg} (> 100)`);
+                    // Generate action if average less than 
+                    if (res.avg > average) {
+                        console.log(`${r} Average: ${res.avg} (> ${average})`);
                     } else {
-                        console.log(`${r} Average: ${res.avg} (< 100)`);
+                        console.log(`${r} Average: ${res.avg} (< ${average})`);
                     }
                 });
                 index++
