@@ -55,19 +55,29 @@ function getIP(host){
         // console.log('addresses: ' + JSON.stringify(addresses));
         addresses.forEach(function (a) {
             ping.promise.probe(a, pingCfg).then(function (res) {
-                
+
                 // console.log(`Host: ${res.inputHost}. Average: ${res.avg}`);
+                var r = ''
+                var h = []
                 dns.reverse(res.inputHost, function (err, domains) {
                     if (err) {
-                        console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: (not found). Average: ${res.avg}`)
-                        var h = new Tree(host, res.inputHost, '(not found)', res.avg)
+                        // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: (not found). Average: ${res.avg}`)
+                        h = new Tree(host, res.inputHost, '(not found)', res.avg)
+                        r = `Role: ${host}. IP: ${res.inputHost}. Host: (not found).`
                     } else {
-                        console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: ${domains}. Average: ${res.avg}`)
-                        var h = new Tree(host, res.inputHost, domains, res.avg)
+                        // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: ${domains}. Average: ${res.avg}`)
+                        h = new Tree(host, res.inputHost, domains, res.avg)
+                        r = `Role: ${host}. IP: ${res.inputHost}. Host: ${domains}.`
                     }
                     // TODO: Global arr (or database) for results
                     allTrees.push(h)
                     // console.log(allTrees);
+
+                    if (res.avg > 200) {
+                        console.log(`${r} Average: ${res.avg} (> 100)`);
+                    } else {
+                        console.log(`${r} Average: ${res.avg} (< 100)`);
+                    }
                 });
                 index++
             });
