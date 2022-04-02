@@ -6,8 +6,15 @@ default:
     update_interval: 1
   targets:
     role1:
-      name: 'github'
-      domain: 'github.com'
+      name: 'bld'
+      domain: 'bld.sys-adm.in'
+      ip:
+        - 135.125.204.230
+        - 212.19.134.52
+        - 92.63.193.211
+        - 212.19.134.166
+        - 5.161.63.216
+        - 49.12.234.130
     role2:
       name: 'google'
       domain: 'google.com'
