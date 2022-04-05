@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const color = require('simple-log-color')
+
 const http = require('http');
 const dns = require('dns');
 const ping = require('ping');
@@ -49,41 +51,58 @@ function Tree(host, ip, name, average) {
 // https://millermedeiros.github.io/mdoc/examples/node_api/doc/dns.html
 let index = 0;
 function getIP(host){
-    dns.resolve4(host, function (err, addresses) {
-        if (err) throw err;
 
-        // console.log('addresses: ' + JSON.stringify(addresses));
-        addresses.forEach(function (a) {
-            ping.promise.probe(a, pingCfg).then(function (res) {
+    // Checki is alive
+    ping.sys.probe(host, function(isAlive){
+        var msg = ''
 
-                // console.log(`Host: ${res.inputHost}. Average: ${res.avg}`);
-                var r = ''
-                var h = []
-                dns.reverse(res.inputHost, function (err, domains) {
-                    if (err) {
-                        // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: (not found). Average: ${res.avg}`)
-                        h = new Tree(host, res.inputHost, '(not found)', res.avg)
-                        r = `Role: ${host}. IP: ${res.inputHost}. Host: (not found).`
-                    } else {
-                        // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: ${domains}. Average: ${res.avg}`)
-                        h = new Tree(host, res.inputHost, domains, res.avg)
-                        r = `Role: ${host}. IP: ${res.inputHost}. Host: ${domains}.`
-                    }
-                    // TODO: Global arr (or database) for results
-                    allTrees.push(h)
-                    // console.log(allTrees);
+        if (isAlive) {
+            msg = 'host ' + host + ' is alive'
 
-                    // Generate action if average less than 
-                    if (res.avg > average) {
-                        console.log(`${r} Average: ${res.avg} (> ${average})`);
-                    } else {
-                        console.log(`${r} Average: ${res.avg} (< ${average})`);
-                    }
-                });
-                index++
-            });
-        });
+            dns.resolve4(host, function (err, addresses) {
+                if (err) throw err;
         
+                // console.log('addresses: ' + JSON.stringify(addresses));
+                addresses.forEach(function (a) {
+                    ping.promise.probe(a, pingCfg).then(function (res) {
+        
+                        // console.log(`Host: ${res.inputHost}. Average: ${res.avg}`);
+                        var r = ''
+                        var h = []
+                        dns.reverse(res.inputHost, function (err, domains) {
+                            if (err) {
+                                // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: (not found). Average: ${res.avg}`)
+                                h = new Tree(host, res.inputHost, '(not found)', res.avg)
+                                r = `Role: ${host}. IP: ${res.inputHost}. Host: (not found).`
+                            } else {
+                                // console.log(`Host: ${host}. IP: ${res.inputHost}. Host name: ${domains}. Average: ${res.avg}`)
+                                h = new Tree(host, res.inputHost, domains, res.avg)
+                                r = `Role: ${host}. IP: ${res.inputHost}. Host: ${domains}.`
+                            }
+                            // TODO: Global arr (or database) for results
+                            allTrees.push(h)
+                            // console.log(allTrees);
+        
+                            // Generate action if average less than 
+                            if (res.avg > average) {
+                                console.log(color.Blue, `${r} Average: ${res.avg} (> ${average})`);
+                            } else {
+                                console.log(color.Green, `${r} Average: ${res.avg} (< ${average})`);
+                            }
+                        });
+                        index++
+                    });
+                });
+                
+            });
+
+        } else {
+            msg = 'host ' + host + ' is dead'
+            console.log(color.Yellow, `Role: ${host}. IP: NoN. Host: NoN. Average: NoN`);
+        }
+
+        console.log(msg);
+
     });
     
 }
