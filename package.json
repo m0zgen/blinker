@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "node-yaml-config": "^1.0.0",
-    "ping": "^0.4.1"
+    "ping": "^0.4.1",
+    "simple-log-color": "^1.0.1"
   }
 }

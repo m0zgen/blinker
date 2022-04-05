@@ -8,7 +8,7 @@ default:
   targets:
     role1:
       name: 'github'
-      domain: 'github.com'
+      domain: 'github1.com'
     role2:
       name: 'google'
       domain: 'google.com'
