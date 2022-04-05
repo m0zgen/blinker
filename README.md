@@ -28,3 +28,5 @@ Host: google.com. IP: 142.250.185.174. Host name: fra16s51-in-f14.1e100.net. Ave
 Host: cloudflare.com. IP: 104.16.132.229. Host name: (not found). Average: 97.559
 Host: cloudflare.com. IP: 104.16.133.229. Host name: (not found). Average: 97.681
 ```
+
+![](docs/blinker-example-output.jpg)
